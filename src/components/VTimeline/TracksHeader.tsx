@@ -43,7 +43,7 @@ export default defineComponent({
         )}
         <div
           ref={refRuler}
-          class="timeline relative h-[40px] select-none border-b-[1px] border-zinc-200"
+          class="timeline relative h-[40px] w-[2500px] select-none border-b-[1px] border-zinc-200"
           onClick={(e) => e.preventDefault() /* Replace with your actual click handler */}
         >
           {Array.from({ length: duration.value * fps.value }, (_, i) => (

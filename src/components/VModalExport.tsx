@@ -66,7 +66,7 @@ export default defineComponent({
                     <InputNumber
                       value={duration.value}
                       class="text-left"
-                      onUpdate:value={(val) => (duration.value = val)}
+                      onUpdate:value={(val: any) => (duration.value = val)}
                     />
                   </FormItem>
                   <FormItem label="Output Size" required>

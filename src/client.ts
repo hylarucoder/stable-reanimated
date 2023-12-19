@@ -2,10 +2,9 @@
 
 import { API_URL, MEDIA_URL } from "@/consts"
 
-async function nfetch(resource: string, options = {}) {
-  const { timeout = 5000 } = options
-
+async function nfetch(resource: string, options: any) {
   const controller = new AbortController()
+  const timeout = 5000
   const id = setTimeout(() => controller.abort(), timeout)
 
   const response = await fetch(resource, {

@@ -9,15 +9,12 @@ export default defineComponent({
     const formStore = useFormStore()
     const { checkpoint, prompt, negativePrompt, seed, fps, loras } = storeToRefs(formStore)
 
-    const advanced = ref({
-      cfg: 1,
-    })
     const activeKey = ref("1")
 
     return () => (
       <Tabs
         activeKey={activeKey.value}
-        onUpdate:activeKey={(v) => {
+        onUpdate:activeKey={(v: any) => {
           activeKey.value = v
         }}
         class="relative z-0"
@@ -56,7 +53,7 @@ export default defineComponent({
                 {loras.value.map((opt, idx) => (
                   <div key={idx} class="mb-2 flex">
                     <VPreviewSelect
-                      value={opt.name}
+                      value={opt.name || ""}
                       onUpdate:value={(value) => {
                         opt.name = value
                       }}
@@ -65,7 +62,7 @@ export default defineComponent({
                     />
                     <InputNumber
                       value={opt.weight}
-                      onUpdate:value={(value) => {
+                      onUpdate:value={(value: any) => {
                         opt.weight = value
                       }}
                       min={0}
@@ -84,7 +81,7 @@ export default defineComponent({
             <FormItem label="Seed">
               <InputNumber
                 value={seed.value}
-                onUpdate:value={(v) => {
+                onUpdate:value={(v: any) => {
                   seed.value = v
                 }}
                 step={1}
@@ -93,7 +90,7 @@ export default defineComponent({
             <FormItem label="FPS">
               <InputNumber
                 value={fps.value}
-                onUpdate:value={(v) => {
+                onUpdate:value={(v: any) => {
                   fps.value = v
                 }}
                 step={1}

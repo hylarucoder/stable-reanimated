@@ -1,7 +1,6 @@
-import { defineComponent, Transition, KeepAlive } from "vue"
-import { RouterLink, RouterView } from "vue-router"
+import { RouterView } from "vue-router"
 import "./assets/css/tailwind.css"
-import "./assets/css/global.scss"
+import "./assets/css/global.css"
 
 export default defineComponent({
   name: "App",

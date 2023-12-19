@@ -1,6 +1,5 @@
 import { Button, FormItem, Select, SelectOption } from "ant-design-vue"
 import VModalExport from "@/components/VModalExport"
-import { storeToRefs } from "pinia"
 
 export default defineComponent({
   setup() {
@@ -31,7 +30,7 @@ export default defineComponent({
               value={preset.value}
               showSearch
               style={{ width: "200px" }}
-              onUpdate:value={(v) => changePresets(v)}
+              onUpdate:value={(v: any) => changePresets(v)}
             >
               <SelectOption>aa</SelectOption>
             </Select>
@@ -42,7 +41,7 @@ export default defineComponent({
               showSearch
               options={optProjects.value}
               style={{ width: "200px" }}
-              onUpdate:value={(value) => (project.value = value)}
+              onUpdate:value={(value: any) => (project.value = value)}
             />
           </FormItem>
         </div>

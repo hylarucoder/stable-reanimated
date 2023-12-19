@@ -116,32 +116,30 @@ body {
   margin-bottom: 5px !important;
 }
 
-.form-compact {
-  .ant-form-item-label {
-    margin-bottom: 0 !important;
-  }
-
-  .ant-form-item {
-    margin-bottom: 8px !important;
-  }
-}
-
-.camera-control-title {
-  .ant-form-item-label {
-    margin-bottom: 0 !important;
-    padding-bottom: 0 !important;
-  }
-
-  .ant-form-item {
-    margin-bottom: 0 !important;
-
-    label {
-      font-size: 12px !important;
-    }
-  }
-}
 
 .pgr-sm {
   margin-bottom: 0px;
   margin-right: 0px;
 }
+
+.form-compact .ant-form-item-label {
+  margin-bottom: 0 !important;
+}
+
+.form-compact .ant-form-item {
+  margin-bottom: 8px !important;
+}
+
+.camera-control-title .ant-form-item-label {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.camera-control-title .ant-form-item {
+  margin-bottom: 0 !important;
+}
+
+.camera-control-title .ant-form-item label {
+  font-size: 12px !important;
+}
+
