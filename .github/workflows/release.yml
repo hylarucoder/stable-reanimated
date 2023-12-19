@@ -19,6 +19,8 @@ jobs:
     - run: pnpm install
     - run: pnpm test
     - run: pnpm build
+    - name: Zip the dist folder
+      run: zip -r dist.zip dist/
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
