@@ -1,7 +1,9 @@
-# Animatediff WebUI Frontend
+<p align='center'>
+Animatediff <b>WebUI</b><sup><em>(frontend)</em></sup><br>
+</p>
 
 > Frontend For Backend https://github.com/hylarucoder/animatediff-webui
 
 ## NOTE
 
-> under heavy development v0.0.1
+> under heavy development
