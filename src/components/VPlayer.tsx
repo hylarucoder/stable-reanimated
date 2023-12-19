@@ -1,10 +1,13 @@
-import { formatProxyMedia } from "@/client"
 import { Button, Popover, Radio, RadioGroup, Slider, Spin } from "ant-design-vue"
 import type { PropType } from "vue"
 import { formatDurationHHMMSS } from "@/utils/date"
 
 const VCameraControlItem = defineComponent({
   props: {
+    value: {
+      type: Number,
+      required: true,
+    },
     icon: {
       type: String as PropType<string>,
       required: true,
@@ -14,24 +17,49 @@ const VCameraControlItem = defineComponent({
       required: true,
     },
   },
-  setup(props, { slots }) {
+  emits: ["update:value"],
+  setup(props, { slots, emit }) {
     // Use `toRefs` to create a reactive reference for each prop
-    const { icon, layout } = storeToRefs(props)
-
+    const refValue = ref(props.value)
+    watch(
+      () => props.value,
+      (v) => {
+        refValue.value = v
+      },
+    )
     return () => (
       <div class="flex w-1/2">
-        {layout.value === "left" ? (
+        {props.layout === "left" ? (
           <>
             <div class="mr-2 flex items-center justify-center">
-              <span class={[icon.value, "h-5 w-5 text-sm leading-6 text-zinc-600"]} />
+              <span class={[props.icon, "h-5 w-5 text-sm leading-6 text-zinc-600"]} />
             </div>
-            {slots.default ? slots.default() : null}
+            <Slider
+              style="width: 100px"
+              onUpdate:value={(x) => {
+                emit("update:value", x)
+              }}
+              value={refValue.value}
+              min={0}
+              max={1}
+              step={0.1}
+              reverse
+            />
           </>
         ) : (
           <>
-            {slots.default ? slots.default() : null}
+            <Slider
+              onUpdate:value={(x) => {
+                emit("update:value", x)
+              }}
+              style="width: 100px"
+              value={refValue.value}
+              min={0}
+              max={1}
+              step={0.1}
+            />
             <div class="ml-2 flex items-center justify-center">
-              <span class={[icon.value, "h-5 w-5 text-sm leading-6 text-zinc-600"]} />
+              <span class={[props.icon, "h-5 w-5 text-sm leading-6 text-zinc-600"]} />
             </div>
           </>
         )}
@@ -52,13 +80,6 @@ export default defineComponent({
     const { loadVideo, play, pause, toggle } = videoPlayerStore
     const videoExportStore = useVideoExportStore()
     const { task } = storeToRefs(videoExportStore)
-
-    onMounted(() => {
-      const srcValue = formatProxyMedia(
-        "C:\\AIGC\\App\\animatediff-webui\\projects\\001-demo\\draft\\2023-12-07T13-52-47\\video.mp4",
-      )
-      loadVideo(srcValue)
-    })
 
     const downloadUrl = () => {
       const url = src.value
@@ -82,8 +103,6 @@ export default defineComponent({
     const togglePlaying = () => {
       playing.value = !playing.value
     }
-
-    // The rest of your component logic...
 
     return () => (
       <div class="relative flex h-full w-full flex-col overflow-hidden">
@@ -114,12 +133,7 @@ export default defineComponent({
               <span class="leading-8">{formatDurationHHMMSS(duration.value)}</span>
             </div>
             <div>
-              <Button
-                onClick={() => {
-                  playing.value = !playing.value
-                }}
-                class="flex items-center justify-center"
-              >
+              <Button onClick={togglePlaying} class="flex items-center justify-center">
                 {playing.value ? (
                   <span class="i-lucide-pause h-4 w-4 text-zinc-600" />
                 ) : (
@@ -177,84 +191,78 @@ export default defineComponent({
                     <div class="max-w-[300px]">
                       <h4 class="text-md mb-1 mt-0">Camera Control</h4>
                       <div class="mt-1 flex justify-between space-x-3">
-                        <VCameraControlItem layout="left" icon="i-lucide-arrow-left">
-                          <Slider
-                            style="width: 100px"
-                            value={cameraControl.value.panLeft}
-                            min={0}
-                            max={1}
-                            step={0.1}
-                            reverse
-                          />
-                        </VCameraControlItem>
-                        <VCameraControlItem layout="right" icon="i-lucide-arrow-right">
-                          <Slider
-                            style="width: 100px"
-                            value={cameraControl.value.panRight}
-                            min={0}
-                            max={1}
-                            step={0.1}
-                          />
-                        </VCameraControlItem>
+                        <VCameraControlItem
+                          value={cameraControl.value.panLeft}
+                          onUpdate:value={(x) => {
+                            cameraControl.value.panLeft = x
+                          }}
+                          layout="left"
+                          icon="i-lucide-arrow-left"
+                        />
+                        <VCameraControlItem
+                          value={cameraControl.value.panRight}
+                          onUpdate:value={(x) => {
+                            cameraControl.value.panRight = x
+                          }}
+                          layout="right"
+                          icon="i-lucide-arrow-right"
+                        />
                       </div>
 
-                      {/* <div class="flex justify-between space-x-3"> */}
-                      {/*   <VCameraControlItem layout="left" icon="i-lucide-arrow-down"> */}
-                      {/*     <ASlider */}
-                      {/*       style="width: 100px" */}
-                      {/*       value={cameraControl.value.tileDown} */}
-                      {/*       min={0} */}
-                      {/*       max={1} */}
-                      {/*       step={0.1} */}
-                      {/*       reverse */}
-                      {/*     /> */}
-                      {/*   </VCameraControlItem> */}
-                      {/*   <VCameraControlItem layout="right" icon="i-lucide-arrow-up"> */}
-                      {/*     <ASlider style="width: 100px" value={cameraControl.value.tileUp} min={0} max={1} step={0.1} /> */}
-                      {/*   </VCameraControlItem> */}
-                      {/* </div> */}
-                      {/* <div class="flex justify-between space-x-3"> */}
-                      {/*   <VCameraControlItem layout="left" icon="i-lucide-rotate-ccw"> */}
-                      {/*     <ASlider */}
-                      {/*       style="width: 100px" */}
-                      {/*       value={cameraControl.value.rollingClockwise} */}
-                      {/*       min={0} */}
-                      {/*       max={1} */}
-                      {/*       step={0.1} */}
-                      {/*       reverse */}
-                      {/*     /> */}
-                      {/*   </VCameraControlItem> */}
-                      {/*   <VCameraControlItem layout="right" icon="i-lucide-rotate-cw"> */}
-                      {/*     <ASlider */}
-                      {/*       style="width: 100px" */}
-                      {/*       value={cameraControl.value.rollingAnticlockwise} */}
-                      {/*       min={0} */}
-                      {/*       max={1} */}
-                      {/*       step={0.1} */}
-                      {/*     /> */}
-                      {/*   </VCameraControlItem> */}
-                      {/* </div> */}
-                      {/* <div class="flex justify-between space-x-3"> */}
-                      {/*   <VCameraControlItem layout="left" icon="i-lucide-zoom-in"> */}
-                      {/*     <ASlider */}
-                      {/*       style="width: 100px" */}
-                      {/*       value={cameraControl.value.zoomIn} */}
-                      {/*       min={0} */}
-                      {/*       max={1} */}
-                      {/*       step={0.1} */}
-                      {/*       reverse */}
-                      {/*     /> */}
-                      {/*   </VCameraControlItem> */}
-                      {/*   <VCameraControlItem layout="right" icon="i-lucide-zoom-out"> */}
-                      {/*     <ASlider */}
-                      {/*       style="width: 100px" */}
-                      {/*       value={cameraControl.value.zoomOut} */}
-                      {/*       min={0} */}
-                      {/*       max={1} */}
-                      {/*       step={0.1} */}
-                      {/*     /> */}
-                      {/*   </VCameraControlItem> */}
-                      {/* </div> */}
+                      <div class="flex justify-between space-x-3">
+                        <VCameraControlItem
+                          value={cameraControl.value.tileDown}
+                          onUpdate:value={(x) => {
+                            cameraControl.value.tileDown = x
+                          }}
+                          layout="left"
+                          icon="i-lucide-arrow-down"
+                        />
+                        <VCameraControlItem
+                          value={cameraControl.value.tileUp}
+                          onUpdate:value={(x) => {
+                            cameraControl.value.tileUp = x
+                          }}
+                          layout="right"
+                          icon="i-lucide-arrow-up"
+                        />
+                      </div>
+                      <div class="flex justify-between space-x-3">
+                        <VCameraControlItem
+                          value={cameraControl.value.rollingClockwise}
+                          onUpdate:value={(x) => {
+                            cameraControl.value.rollingClockwise = x
+                          }}
+                          layout="left"
+                          icon="i-lucide-rotate-ccw"
+                        />
+                        <VCameraControlItem
+                          value={cameraControl.value.rollingAnticlockwise}
+                          onUpdate:value={(x) => {
+                            cameraControl.value.rollingAnticlockwise = x
+                          }}
+                          layout="right"
+                          icon="i-lucide-rotate-cw"
+                        />
+                      </div>
+                      <div class="flex justify-between space-x-3">
+                        <VCameraControlItem
+                          onUpdate:value={(x) => {
+                            cameraControl.value.zoomIn = x
+                          }}
+                          layout="left"
+                          value={cameraControl.value.zoomIn}
+                          icon="i-lucide-zoom-in"
+                        />
+                        <VCameraControlItem
+                          onUpdate:value={(x) => {
+                            cameraControl.value.zoomOut = x
+                          }}
+                          layout="right"
+                          value={cameraControl.value.zoomOut}
+                          icon="i-lucide-zoom-out"
+                        />
+                      </div>
                     </div>
                   ),
                 }}

@@ -1,6 +1,8 @@
-import { Button, Form, FormItem, InputNumber, Modal, Radio, RadioGroup } from "ant-design-vue"
+import { Button, Form, FormItem, InputNumber, Modal, Progress, Radio, RadioGroup } from "ant-design-vue"
+import VProgressMini from "@/components/VProgressMini"
 
 export default defineComponent({
+  emits: ["closeModal"],
   setup(props, { emit }) {
     const storeVideoExport = useVideoExportStore()
     const { task, isActive } = storeToRefs(storeVideoExport)
@@ -9,19 +11,43 @@ export default defineComponent({
     const formStore = useFormStore()
     const { sizeOpts, size, duration, performance } = storeToRefs(formStore)
 
-    const handleCloseModal = () => emit("closeModal")
-    console.log("task", task.value)
+    const handleCloseModal = () => {}
+    const status = computed(() => {
+      return task.value.completed >= 100 ? "success" : "active"
+    })
+    const refSubtasks = ref<HTMLElement[]>([])
+    const refBtn = ref<HTMLElement | null>(null)
+    const isHovered = useElementHover(refBtn)
+    watch(isHovered, (value, oldValue) => {
+      console.log("old,", value, oldValue)
+    })
+
+    // 未点击
+    // isActive + hover
+    // isInterrupted
+    watch(
+      task,
+      () => {
+        nextTick(() => {
+          if (refSubtasks.value?.length) {
+            refSubtasks.value[refSubtasks.value?.length - 1].scrollIntoView({ behavior: "smooth" })
+          }
+        })
+      },
+      {
+        deep: true,
+      },
+    )
 
     return () => (
-      <Modal centered open title="Export" onClose={handleCloseModal}>
+      <Modal centered open title="Export" onCancel={handleCloseModal}>
         {{
           default: () => (
             <div class="flex h-[400px] w-[500px] select-none">
               <div class="flex w-1/2 pr-5 pt-2">
                 <div class="flex h-full w-full items-center justify-center bg-zinc-300">
                   <div class="flex-col">
-                    <div>renderaing</div>
-                    <div>{JSON.stringify(task.value)}</div>
+                    <Progress type="circle" percent={task.value.completed} status={status.value} />
                   </div>
                 </div>
               </div>
@@ -57,22 +83,38 @@ export default defineComponent({
             </div>
           ),
           footer: () => (
-            <>
-              <Button key="back" onClick={handleCloseModal}>
-                Return
-              </Button>
-              <Button
-                key="submit"
-                type="primary"
-                loading={isActive.value}
-                onClick={() => {
-                  console.log("oncli")
-                  storeVideoExport.submitExport()
-                }}
-              >
-                Export
-              </Button>
-            </>
+            <div class="flex justify-between">
+              <div ref="refStatusBar" class="h-[30px] w-[230px] overflow-y-scroll px-1">
+                {task.value.subtasks.map((sub) => {
+                  return (
+                    <div key={sub.description} ref={refSubtasks} class="flex px-2 text-left">
+                      <VProgressMini completed={sub.completed} description={sub.description} />
+                    </div>
+                  )
+                })}
+              </div>
+              <div class="w-[100px]" ref={refBtn}>
+                {isHovered.value && isActive.value ? (
+                  <Button class="w-[100px]" type="primary" danger key="back" onClick={handleCloseModal}>
+                    Interrupt
+                  </Button>
+                ) : (
+                  <Button
+                    // v-show={!(isHovered.value && isActive.value)}
+                    class="w-[100px]"
+                    key="submit"
+                    type="primary"
+                    loading={isActive.value}
+                    onClick={() => {
+                      storeVideoExport.submitExport()
+                    }}
+                  >
+                    Export
+                  </Button>
+                )}
+                {/*如果没有hover, 则展示, 如果*/}
+              </div>
+            </div>
           ),
         }}
       </Modal>
