@@ -80,7 +80,7 @@ export default defineComponent({
         )}
 
         {loading.value === TLoadingEnum.SUCCESS && (
-          <div class="h-screen w-full p-0 px-0">
+          <div class="h-screen w-full p-0 px-0 bg-white">
             <VMenubar class="border-1" />
             <div class="border-x-1 border-b-1 flex h-[--workspace-height] justify-between">
               <VMainPlayer />

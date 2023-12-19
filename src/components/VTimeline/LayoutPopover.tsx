@@ -19,7 +19,7 @@ export default defineComponent({
           <FormItem label="controlnet">
             <CheckboxGroup
               value={timeline.value.controlnet}
-              onUpdate:value={(v) => {
+              onUpdate:value={(v: any) => {
                 timeline.value.controlnet = v
               }}
             >
@@ -32,7 +32,7 @@ export default defineComponent({
           </FormItem>
           <FormItem label="ip-adapter">
             <CheckboxGroup
-              onUpdate:value={(v) => {
+              onUpdate:value={(v: any) => {
                 timeline.value.ipAdapter = v
               }}
               value={timeline.value.ipAdapter}

@@ -10,7 +10,7 @@ interface TOptions {
 
 export default defineComponent({
   props: {
-    modelValue: {
+    value: {
       type: String,
       default: "",
     },
@@ -19,35 +19,29 @@ export default defineComponent({
       default: () => [],
     },
   },
-  emits: ["update:modelValue"],
+  emits: ["update:value"],
   setup(props, { emit }) {
-    const selectedValue = ref(props.modelValue || "")
+    const selectedValue = ref(props.value || "")
 
     watch(selectedValue, (newVal) => {
-      emit("update:modelValue", newVal)
+      emit("update:value", newVal)
     })
     // console.log("selectedValue", selectedValue.value, props.options)
 
     return () => (
       <Select
         value={selectedValue.value}
-        onUpdate:value={(v) => {
+        onUpdate:value={(v: any) => {
           selectedValue.value = v
         }}
         showSearch
       >
         {props.options.map((opt) => (
-          <SelectOption
-            key={opt.value}
-            value={opt.value}
-            label={opt.label}
-            title={opt.label}
-            style={{ width: "100%" }}
-          >
+          <SelectOption key={opt.value} value={opt.value} label={opt.label} title={opt.label} style={{ width: "100%" }}>
             {opt.thumbnail ? (
               <Popover mouseEnterDelay={0.02} style={{ zIndex: 1000 }} class="rounded-xl p-0" placement="right">
                 {{
-                  content: () => <img class="max-w-[300px]" src={formatProxyMedia(opt.thumbnail)} />,
+                  content: () => <img class="max-w-[300px]" src={formatProxyMedia(opt.thumbnail || "")} />,
                   default: () => <span>{opt.label}</span>,
                 }}
               </Popover>

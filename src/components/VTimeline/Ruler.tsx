@@ -1,5 +1,3 @@
-import { defineComponent, computed } from "vue"
-
 export default defineComponent({
   props: {
     index: {

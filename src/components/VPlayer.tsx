@@ -103,6 +103,9 @@ export default defineComponent({
     const togglePlaying = () => {
       playing.value = !playing.value
     }
+    const canPlay = computed(() => {
+      return src.value !== ""
+    })
 
     return () => (
       <div class="relative flex h-full w-full flex-col overflow-hidden">
@@ -133,7 +136,7 @@ export default defineComponent({
               <span class="leading-8">{formatDurationHHMMSS(duration.value)}</span>
             </div>
             <div>
-              <Button onClick={togglePlaying} class="flex items-center justify-center">
+              <Button disabled={!canPlay.value} onClick={togglePlaying} class="flex items-center justify-center">
                 {playing.value ? (
                   <span class="i-lucide-pause h-4 w-4 text-zinc-600" />
                 ) : (
@@ -143,6 +146,7 @@ export default defineComponent({
             </div>
             <div class="flex space-x-2">
               <Button
+                disabled={!canPlay.value}
                 onClick={() => {
                   toggle()
                 }}
@@ -151,6 +155,7 @@ export default defineComponent({
                 <span class="i-lucide-fullscreen h-4 w-4 text-zinc-600" />
               </Button>
               <Button
+                disabled={!canPlay.value}
                 onClick={() => {
                   downloadUrl()
                 }}

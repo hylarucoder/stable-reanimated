@@ -1,6 +1,5 @@
 import { getOptions } from "@/client"
 import { ensureSpaceAfterComma } from "@/utils/t"
-import { algorithms } from "iron-webcrypto"
 
 export interface TPromptBlock {
   start: number
@@ -60,14 +59,20 @@ const x2res = (res: string) => {
   return parseInt(arr[0]) * 2 + "x" + parseInt(arr[1]) * 2
 }
 
-const calcSizeOpts = (v) => {
-  const ar = {
+const calcSizeOpts = (v: string): { label: string; value: string }[] => {
+  const ar: string | undefined = {
     "16:9": "768x432",
     "4:3": "768x576",
     "1:1": "600x600",
     "3:4": "576x768",
     "9:16": "432x768",
   }[v]
+
+  // Check if the aspect ratio is undefined (not found in the object)
+  if (ar === undefined) {
+    throw new Error("Invalid aspect ratio value")
+  }
+
   return [
     {
       label: ar,
@@ -132,6 +137,7 @@ export const useFormStore = defineStore("form", () => {
     preset.value = _preset.name
     checkpoint.value = _preset.checkpoint
     motion.value = _preset.motion
+    // @ts-ignore
     loras.value = (_preset.loras || []).map((x) => {
       return {
         name: x[0],
@@ -209,7 +215,7 @@ const unflattenCheckpoint = (arr: any[]) => {
   })
 }
 
-function unflattenKV(map) {
+function unflattenKV(map: any) {
   return Array.from(map, ([label, value]) => ({
     label,
     value,
@@ -251,7 +257,7 @@ export const useOptionsStore = defineStore("options", () => {
   const optProjects = computed(() => {
     return unflatten(options.value.projects)
   })
-  const loadOptions = (_options) => {
+  const loadOptions = (_options: any) => {
     options.value.presets = _options.presets
     options.value.projects = _options.projects
     options.value.checkpoints = _options.checkpoints
@@ -263,7 +269,7 @@ export const useOptionsStore = defineStore("options", () => {
     const res = await getOptions()
     loadOptions(res)
     const preset_name = res.presets[0].name
-    const _preset = res.presets.find((p) => p.name === preset_name)
+    const _preset = res.presets.find((p: any) => p.name === preset_name)
     loadPreset(_preset)
   }
 

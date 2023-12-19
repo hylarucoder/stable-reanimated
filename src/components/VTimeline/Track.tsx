@@ -1,4 +1,5 @@
 import VTimelineBlock from "@/components/VTimeline/Block"
+import { TTrackBlock } from "@/composables/timeline"
 
 export default defineComponent({
   setup() {
@@ -85,7 +86,7 @@ export default defineComponent({
     return () => (
       <div
         ref={refTimelineTrack}
-        class="relative flex h-[--timeline-track-height] rounded border-b-[1px] border-zinc-200 text-white"
+        class="relative flex h-[--timeline-track-height] rounded w-[2500px] border-b-[1px] border-zinc-200 text-white"
       >
         {promptBlocks.value.map((block, index) => (
           <VTimelineBlock

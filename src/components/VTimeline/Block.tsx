@@ -2,11 +2,14 @@ import type { TTrackBlock } from "@/composables/timeline"
 
 export default defineComponent({
   props: {
-    block: Object as () => TTrackBlock,
+    block: {
+      type: Object as () => TTrackBlock,
+      required: true,
+    },
     isVirtual: Boolean,
     unitWidth: Number,
   },
-  emits: ["blockSelect", "dragStart", "dragEnd"],
+  emits: ["blockSelect", "dragStart", "dragEnd", "click"],
   setup(props, { emit }) {
     const block = ref(props.block)
     const isVirtual = ref(props.isVirtual)

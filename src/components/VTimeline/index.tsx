@@ -1,7 +1,6 @@
 import VTimelineToolbar from "@/components/VTimeline/Toolbar"
 import VTimelineTrackLeftPanel from "@/components/VTimeline/TrackLeftPanel"
 import VTimelineTracks from "@/components/VTimeline/Tracks"
-import { Suspense } from "vue"
 
 export default defineComponent({
   setup() {

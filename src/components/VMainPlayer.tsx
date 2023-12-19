@@ -9,7 +9,7 @@ export default defineComponent({
       <div class="w-full overflow-auto border-x-[1px] border-b-[1px] border-zinc-100">
         <Tabs
           activeKey={activeKey.value}
-          onUpdate:activeKey={(v) => {
+          onUpdate:activeKey={(v: any) => {
             activeKey.value = v
           }}
           class="tab-main relative z-10"
