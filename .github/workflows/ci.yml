@@ -27,6 +27,6 @@ jobs:
         version: 8
     - run: npm install -g pnpm
     - run: pnpm install
-    - run: pnpm run build --if-present
     - run: pnpm test
+    - run: pnpm build
 
