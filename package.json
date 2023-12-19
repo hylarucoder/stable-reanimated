@@ -1,0 +1,55 @@
+{
+  "name": "vue-starter-kit",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "vite",
+    "start": "yarn dev",
+    "build": "vue-tsc --noEmit && vite build",
+    "serve": "vite preview"
+  },
+  "dependencies": {
+    "@unhead/vue": "^1.8.9",
+    "@vueuse/core": "^10.7.0",
+    "@vueuse/head": "^2.0.0",
+    "nprogress": "^0.2.0",
+    "pinia": "^2.1.7",
+    "vue": "^3.3.12",
+    "vue-demi": "^0.14.6",
+    "vue-i18n": "^9.8.0",
+    "vue-router": "^4.2.5"
+  },
+  "devDependencies": {
+    "@egoist/tailwindcss-icons": "^1.7.1",
+    "@iconify/json": "^2.2.159",
+    "@intlify/unplugin-vue-i18n": "^1.6.0",
+    "@types/nprogress": "^0.2.3",
+    "@vitejs/plugin-vue": "^4.5.2",
+    "@vitejs/plugin-vue-jsx": "^3.1.0",
+    "@vue/compiler-sfc": "^3.3.12",
+    "ant-design-vue": "^4.0.8",
+    "autoprefixer": "^10.4.16",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "eslint-plugin-vue": "^9.19.2",
+    "postcss": "^8.4.32",
+    "prettier": "^3.1.1",
+    "prettier-plugin-tailwindcss": "^0.5.9",
+    "sass": "^1.69.5",
+    "tailwindcss": "^3.3.7",
+    "typescript": "^5.3.3",
+    "unplugin-auto-import": "^0.17.2",
+    "unplugin-vue-components": "^0.26.0",
+    "unplugin-vue-macros": "^2.7.3",
+    "unplugin-vue-router": "^0.7.0",
+    "husky": "^8.0.3",
+    "vite": "^5.0.10",
+    "vite-plugin-vue-devtools": "^1.0.0-rc.8",
+    "vite-plugin-vue-layouts": "^0.10.0",
+    "vue-tsc": "^1.8.25"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx,mjs,vue}": "eslint --fix",
+    "*.{ts,tsx,js,jsx,mjs,css,scss,less,md,vue}": "prettier --write"
+  }
+}
