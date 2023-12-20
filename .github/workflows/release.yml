@@ -5,7 +5,9 @@ on:
     tags: [ v\d+\.\d+\.\d+ ]
 
 jobs:
-  build:
+  create-release:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     outputs:
       release_id: ${{ steps.create-release.outputs.id }}
@@ -13,48 +15,73 @@ jobs:
       release_body: "${{ steps.tag.outputs.message }}"
 
     steps:
-    - uses: actions/checkout@v4
-    - uses: pnpm/action-setup@v2
-      with:
-        version: 8.6.0
-    - name: Get version
-      id: get_version
-      uses: battila7/get-version-action@v2
-    - name: Get tag message
-      id: tag
-      run: |
-        git fetch --depth=1 origin +refs/tags/*:refs/tags/*
-        echo "message<<EOF" >> $GITHUB_OUTPUT
-        echo "$(git tag -l --format='%(contents)' ${{ steps.get_version.outputs.version }})" >> $GITHUB_OUTPUT
-        echo "EOF" >> $GITHUB_OUTPUT
-    - run: npm install -g pnpm
-    - run: pnpm install
-    - run: pnpm test
-    - run: pnpm build
+      - uses: actions/checkout@v4
 
-    - name: Create Release
-      id: create-release
-      uses: ncipollo/release-action@v1
-      with:
-        draft: true
-        name: ${{ steps.get_version.outputs.version }}
-        tag: ${{ steps.get_version.outputs.version }}
-        body: "${{ steps.tag.outputs.message }}"
+      - name: Get version
+        id: get_version
+        uses: battila7/get-version-action@v2
 
-    - name: Package plugin and create userscript
-      run: |
-        mkdir release
-        mv dist/ release/animatediff-webui-frontend-${{ steps.get_version.outputs.version-without-v }}
-        cd release
-        zip -r animatediff-webui-frontend-${{ steps.get_version.outputs.version-without-v }}.zip ./animatediff-webui-frontend-${{ steps.get_version.outputs.version-without-v }}/*
+      - name: Get tag message
+        id: tag
+        run: |
+          git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+          echo "message<<EOF" >> $GITHUB_OUTPUT
+          echo "$(git tag -l --format='%(contents)' ${{ steps.get_version.outputs.version }})" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
-    - name: Upload extensions to release
-      id: upload-release-asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ needs.create-release.outputs.release_upload_url }}
-        asset_path: release/animatediff-webui-frontend-${{ steps.get_version.outputs.version-without-v }}.zip
-        asset_name: animatediff-webui-frontend-${{ steps.get_version.outputs.version-without-v }}.zip
-        asset_content_type: application/zip
+      - name: Create Release
+        id: create-release
+        uses: ncipollo/release-action@v1
+        with:
+          draft: true
+          name: ${{ steps.get_version.outputs.version }}
+          tag: ${{ steps.get_version.outputs.version }}
+          body: "${{ steps.tag.outputs.message }}"
+
+  build-frontend:
+    needs: [ create-release ]
+    permissions:
+      contents: write
+      packages: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8.6.0
+
+      - name: Get version
+        id: get_version
+        uses: battila7/get-version-action@v2
+
+      - name: Get tag message
+        id: tag
+        run: |
+          git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+          echo "message<<EOF" >> $GITHUB_OUTPUT
+          echo "$(git tag -l --format='%(contents)' ${{ steps.get_version.outputs.version }})" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build
+        run: pnpm build
+
+      - name: Package Assets
+        run: |
+          mkdir release
+          mv dist/ release/animatediff-webui-frontend-${{ steps.get_version.outputs.version-without-v }}
+          cd release
+          zip -r animatediff-webui-frontend-${{ steps.get_version.outputs.version-without-v }}.zip ./animatediff-webui-frontend-${{ steps.get_version.outputs.version-without-v }}/*
+
+      - name: Upload extensions to release
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.create-release.outputs.release_upload_url }}
+          asset_path: release/animatediff-webui-frontend-${{ steps.get_version.outputs.version-without-v }}.zip
+          asset_name: animatediff-webui-frontend-${{ steps.get_version.outputs.version-without-v }}.zip
+          asset_content_type: application/zip
