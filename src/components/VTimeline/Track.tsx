@@ -16,7 +16,7 @@ export default defineComponent({
     const refTimelineTrack = ref<HTMLElement | null>(null)
 
     const getAlignedStart = (x: number) => {
-      return Math.floor(Math.floor(x / 25) * 25) * 5
+      return Math.floor(Math.floor(x / unitWidth.value) * unitWidth.value) * 5
     }
 
     const updateVirtualBlock = (x: number) => {
@@ -86,7 +86,7 @@ export default defineComponent({
     return () => (
       <div
         ref={refTimelineTrack}
-        class="relative flex h-[--timeline-track-height] rounded w-[2500px] border-b-[1px] border-zinc-200 text-white"
+        class="min-w-screen relative flex h-[--timeline-track-height] rounded border-b-[1px] border-zinc-200 text-white"
       >
         {promptBlocks.value.map((block, index) => (
           <VTimelineBlock

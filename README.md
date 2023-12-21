@@ -7,3 +7,7 @@ Animatediff <b>WebUI</b><sup><em>(frontend)</em></sup><br>
 ## NOTE
 
 > under heavy development
+
+## Credit
+
+- https://github.com/antfu/vitesse

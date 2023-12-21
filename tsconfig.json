@@ -8,7 +8,7 @@
     ],
     "baseUrl": ".",
     "module": "ESNext",
-    "moduleResolution": "moduleResolution",
+    "moduleResolution": "nodenext",
     "paths": {
       "@/*": [
         "src/*"

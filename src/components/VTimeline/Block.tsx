@@ -14,7 +14,7 @@ export default defineComponent({
     const block = ref(props.block)
     const isVirtual = ref(props.isVirtual)
     const left = computed(() => Math.floor(block.value.start / 5))
-    const blockWidth = computed(() => 25)
+    const blockWidth = computed(() => props.unitWidth)
     const selected = ref(false)
 
     const refBlock = ref<HTMLDivElement>()

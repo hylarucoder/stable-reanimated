@@ -1,4 +1,4 @@
-import { formatProxyMedia, getTaskStatus, submitTask } from "@/client"
+import { formatProxyMedia, getTaskStatus, interruptTask, submitTask } from "@/client"
 import { message } from "ant-design-vue"
 
 export enum TStatus {
@@ -22,7 +22,20 @@ type TOverallTask = {
   completed: number
   total: number
   videoPath: string
+  interruptProcessing: boolean
+  processingInterrupted: boolean
   subtasks: TSubtask[]
+}
+
+const defaultTask: TOverallTask = {
+  pid: 0,
+  status: TStatus.PENDING,
+  completed: 0,
+  total: 100,
+  videoPath: "",
+  subtasks: [],
+  interruptProcessing: false,
+  processingInterrupted: true,
 }
 
 export const useVideoExportStore = defineStore("videoExport", () => {
@@ -31,14 +44,7 @@ export const useVideoExportStore = defineStore("videoExport", () => {
   const timelineStore = useTimelineStore()
   const { promptBlocks } = timelineStore
   const videoPlayerStore = useVideoPlayer()
-  const task = ref<TOverallTask>({
-    pid: 0,
-    status: TStatus.PENDING,
-    completed: 0,
-    total: 100,
-    videoPath: "",
-    subtasks: [],
-  })
+  const task = ref<TOverallTask>(defaultTask)
   const showModal = () => {
     modalVisible.value = true
   }
@@ -47,27 +53,39 @@ export const useVideoExportStore = defineStore("videoExport", () => {
   }
 
   const { pause, resume, isActive } = useIntervalFn(async () => {
-    const res = (await getTaskStatus({
-      pid: task.value.pid,
-    })) as TOverallTask
-    if (!res?.pid) {
-      task.value.status = TStatus.ERROR
-      return
-    }
-    task.value.pid = res.pid
-    task.value.status = res.status
-    task.value.completed = res.completed
-    task.value.total = res.total
-    task.value.subtasks = res.subtasks.filter((x) => x.completed > 0)
+    try {
+      const res = (await getTaskStatus({
+        pid: task.value.pid,
+      })) as TOverallTask
+      console.log("resssw", res)
+      if (!res?.pid) {
+        console.log("error no pid", res)
+        task.value.status = TStatus.ERROR
+        pause()
+        return
+      }
+      task.value.pid = res.pid
+      task.value.status = res.status
+      task.value.completed = res.completed
+      task.value.total = res.total
+      task.value.subtasks = res.subtasks.filter((x) => x.completed > 0)
+      task.value.interruptProcessing = res.interruptProcessing
+      task.value.processingInterrupted = res.processingInterrupted
+      if (res.status == "ERROR") {
+        console.log("status error pause", res.status)
+        pause()
+        return
+      }
 
-    if (!res?.videoPath) {
-      return
-    }
-    task.value.videoPath = res.videoPath
-    videoPlayerStore.loadVideo(formatProxyMedia(res.videoPath))
-    hideModal()
-    // player.reloadVideo()
-    pause()
+      if (!res?.videoPath) {
+        return
+      }
+      task.value.videoPath = res.videoPath
+      videoPlayerStore.loadVideo(formatProxyMedia(res.videoPath))
+      hideModal()
+      // player.reloadVideo()
+      pause()
+    } catch (e) {}
   }, 2000)
   onMounted(() => pause())
 
@@ -110,10 +128,23 @@ export const useVideoExportStore = defineStore("videoExport", () => {
     }
   }
 
+  const cancelExport = async () => {
+    const data = {
+      pid: task.value.pid,
+    }
+    try {
+      await interruptTask(data)
+    } catch (e) {
+      console.log("generate error", e)
+      message.error(e.message)
+    }
+  }
+
   return {
     task,
     isActive,
     modalVisible,
+    cancelExport,
     submitExport,
     showModal,
     hideModal,

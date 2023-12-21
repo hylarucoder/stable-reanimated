@@ -11,20 +11,22 @@ export default defineComponent({
     const formStore = useFormStore()
     const { sizeOpts, size, duration, performance } = storeToRefs(formStore)
 
-    const handleCloseModal = () => {}
+    const handleCloseModal = () => {
+      emit("closeModal")
+      // storeVideoExport.cancelExport()
+    }
+    const handleInterruputModal = () => {
+      storeVideoExport.cancelExport()
+    }
     const status = computed(() => {
+      if (task.value.status == "ERROR") {
+        return "error"
+      }
       return task.value.completed >= 100 ? "success" : "active"
     })
     const refSubtasks = ref<HTMLElement[]>([])
     const refBtn = ref<HTMLElement | null>(null)
     const isHovered = useElementHover(refBtn)
-    watch(isHovered, (value, oldValue) => {
-      console.log("old,", value, oldValue)
-    })
-
-    // 未点击
-    // isActive + hover
-    // isInterrupted
     watch(
       task,
       () => {
@@ -94,13 +96,19 @@ export default defineComponent({
                 })}
               </div>
               <div class="w-[100px]" ref={refBtn}>
-                {isHovered.value && isActive.value ? (
-                  <Button class="w-[100px]" type="primary" danger key="back" onClick={handleCloseModal}>
+                {(isHovered.value && isActive.value) || task.value.interruptProcessing ? (
+                  <Button
+                    loading={task.value.interruptProcessing}
+                    class="w-[100px]"
+                    type="primary"
+                    danger
+                    key="back"
+                    onClick={handleInterruputModal}
+                  >
                     Interrupt
                   </Button>
                 ) : (
                   <Button
-                    // v-show={!(isHovered.value && isActive.value)}
                     class="w-[100px]"
                     key="submit"
                     type="primary"

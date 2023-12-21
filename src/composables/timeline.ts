@@ -45,7 +45,7 @@ export const useTimelineStore = defineStore("timeline", () => {
   })
 
   const promptBlocks = ref<TPromptBlock[]>([])
-  const duration = ref(12)
+  const duration = ref(30)
   const fps = ref(8)
   const unitWidth = ref(25)
   const unit = computed(() => {

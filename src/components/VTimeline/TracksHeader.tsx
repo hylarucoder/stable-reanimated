@@ -43,20 +43,20 @@ export default defineComponent({
         )}
         <div
           ref={refRuler}
-          class="timeline relative h-[40px] w-[2500px] select-none border-b-[1px] border-zinc-200"
+          class="timeline relative h-[40px] min-w-screen select-none border-b-[1px] border-zinc-200"
           onClick={(e) => e.preventDefault() /* Replace with your actual click handler */}
         >
           {Array.from({ length: duration.value * fps.value }, (_, i) => (
             <div
               key={i}
-              class="absolute z-[100] w-[25px]"
+              class="absolute z-[100]"
               style={{
                 left: `${i * unitWidth.value}px`,
                 width: `${unitWidth.value}px`,
               }}
             >
               {i % fps.value === 0 ? (
-                <span class="text-ms block w-[25px] select-none font-semibold text-gray-600">{i / fps.value}s</span>
+                <span class="text-ms block select-none font-semibold text-gray-600">{i / fps.value}s</span>
               ) : (
                 <span
                   class="block select-none text-[10px] font-semibold text-gray-400"
