@@ -27,6 +27,12 @@ export default defineComponent({
     const refSubtasks = ref<HTMLElement[]>([])
     const refBtn = ref<HTMLElement | null>(null)
     const isHovered = useElementHover(refBtn)
+    const lastTask = computed(() => {
+      if (task.value.subtasks.length == 0) {
+        return null
+      }
+      return task.value.subtasks[task.value.subtasks.length - 1]
+    })
     watch(
       task,
       () => {
@@ -42,7 +48,7 @@ export default defineComponent({
     )
 
     return () => (
-      <Modal centered open title="Export" onCancel={handleCloseModal}>
+      <Modal centered open title="Export" onCancel={handleCloseModal} maskClosable={false}>
         {{
           default: () => (
             <div class="flex h-[400px] w-[500px] select-none">
@@ -87,13 +93,11 @@ export default defineComponent({
           footer: () => (
             <div class="flex justify-between">
               <div ref="refStatusBar" class="h-[30px] w-[230px] overflow-y-scroll px-1">
-                {task.value.subtasks.map((sub) => {
-                  return (
-                    <div key={sub.description} ref={refSubtasks} class="flex px-2 text-left">
-                      <VProgressMini completed={sub.completed} description={sub.description} />
-                    </div>
-                  )
-                })}
+                {lastTask.value && (
+                  <div key={lastTask.value.description} class="flex px-2 text-left">
+                    <VProgressMini completed={lastTask.value.completed} description={lastTask.value.description} />
+                  </div>
+                )}
               </div>
               <div class="w-[100px]" ref={refBtn}>
                 {(isHovered.value && isActive.value) || task.value.interruptProcessing ? (

@@ -1,14 +1,14 @@
-import { defineComponent, ref, toRefs } from "vue"
 import { useActiveBlockStore } from "@/composables/block"
 import VProjectSettingPanel from "./VProjectSettingPanel" // Assumed import
-import VPromptPanel from "./VPromptPanel" // Assumed import
+import VPromptPanel from "./VPromptPanel"
+import { storeToRefs } from "pinia" // Assumed import
 
 export default defineComponent({
   setup() {
     const panelView = usePanelView()
     const activeBlockStore = useActiveBlockStore()
-    const { block: activeBlock } = toRefs(activeBlockStore)
-    const { projectSetting } = toRefs(panelView)
+    const { block: activeBlock } = storeToRefs(activeBlockStore)
+    const { projectSetting } = storeToRefs(panelView)
 
     return () => (
       <div class="relative w-[400px] overflow-auto border-b-[1px] border-r-[1px] border-zinc-100 px-5">

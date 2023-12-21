@@ -1,6 +1,5 @@
 import type { UnwrapRef } from "vue"
 import type { TPromptBlock } from "@/composables/options"
-import { b } from "ipx"
 
 interface FormState {
   ipAdapter: string[]

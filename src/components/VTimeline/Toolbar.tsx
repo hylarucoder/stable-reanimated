@@ -6,7 +6,7 @@ export default defineComponent({
     // Any reactive state or computed properties would go here
 
     return () => (
-      <div class="min-w-screen flex h-[--timeline-toolbar-height] items-center justify-between border-b-[1px] border-zinc-200 px-2 pb-2 pt-2">
+      <div class="flex h-[--timeline-toolbar-height] w-screen items-center justify-between border-b-[1px] border-zinc-200 px-2 pb-2 pt-2">
         <Popover placement="topLeft">
           {{
             content: () => <VTimelineLayoutPopover />,

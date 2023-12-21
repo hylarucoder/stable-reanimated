@@ -88,7 +88,7 @@ export default defineComponent({
         ref={refTimelineTrack}
         class="min-w-screen relative flex h-[--timeline-track-height] rounded border-b-[1px] border-zinc-200 text-white"
       >
-        {promptBlocks.value.map((block, index) => (
+        {promptBlocks.value.map((block: TTrackBlock, index) => (
           <VTimelineBlock
             key={index}
             isVirtual={false}

@@ -14,7 +14,6 @@ export default defineComponent({
     const block = ref(props.block)
     const isVirtual = ref(props.isVirtual)
     const left = computed(() => Math.floor(block.value.start / 5))
-    const blockWidth = computed(() => props.unitWidth)
     const selected = ref(false)
 
     const refBlock = ref<HTMLDivElement>()
@@ -60,10 +59,10 @@ export default defineComponent({
         ref={refBlock}
         class={{
           "timeline-track-block absolute m-0 flex h-[40px] items-center justify-center p-0 text-center": true,
-          "border-2 border-white": selected.value && !isVirtual.value,
+          "border-[1px]": selected.value && !isVirtual.value,
         }}
         style={{
-          width: `${blockWidth.value}px`,
+          width: `${props.unitWidth}px`,
           left: `${left.value}px`,
         }}
         draggable
