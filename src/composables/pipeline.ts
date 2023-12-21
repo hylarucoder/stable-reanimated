@@ -40,8 +40,8 @@ const defaultTask: TOverallTask = {
 
 export const useVideoExportStore = defineStore("videoExport", () => {
   const modalVisible = ref(false)
-  const formStore = useFormStore()
-  const timelineStore = useTimelineStore()
+  const formStore = useStoreForm()
+  const timelineStore = useStoreTimeline()
   const { promptBlocks } = timelineStore
   const videoPlayerStore = useVideoPlayer()
   const task = ref<TOverallTask>(defaultTask)

@@ -1,5 +1,5 @@
 import { Popover, Slider } from "ant-design-vue"
-import VTimelineLayoutPopover from "@/components/VTimeline/LayoutPopover"
+import VTimelineLayoutPopover from "./Toolbar/PickTracks.tsx"
 
 export default defineComponent({
   setup() {

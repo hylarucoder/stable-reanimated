@@ -1,11 +1,10 @@
-import { useActiveBlockStore } from "@/composables/block"
-import VProjectSettingPanel from "./VProjectSettingPanel" // Assumed import
-import VPromptPanel from "./VPromptPanel"
+import VProjectSettingPanel from "./VProjectSettingPanel.tsx" // Assumed import
+import VPromptPanel from "./VPromptPanel.tsx"
 
 export default defineComponent({
   setup() {
-    const panelView = usePanelView()
-    const activeBlockStore = useActiveBlockStore()
+    const panelView = useStoreLayout()
+    const activeBlockStore = useActiveClip()
     const { block: activeBlock } = storeToRefs(activeBlockStore)
     const { projectSetting } = storeToRefs(panelView)
 

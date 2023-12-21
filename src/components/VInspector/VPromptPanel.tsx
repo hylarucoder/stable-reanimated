@@ -1,9 +1,9 @@
 import { Button, Form, FormItem } from "ant-design-vue"
-import VPromptInput from "@/components/VPromptInput"
+import VPromptInput from "../VPromptInput.tsx"
 
 export default defineComponent({
   setup() {
-    const activeBlock = useActiveBlockStore()
+    const activeBlock = useActiveClip()
     const { block } = storeToRefs(activeBlock)
     const { onFocus, onBlur, deleteBlock } = activeBlock
 

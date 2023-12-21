@@ -3,7 +3,7 @@ import VModalExport from "@/components/VModalExport"
 
 export default defineComponent({
   setup() {
-    const formStore = useFormStore()
+    const formStore = useStoreForm()
     const { preset, project } = storeToRefs(formStore)
     const { loadPreset } = formStore
     const optionsStore = useOptionsStore()

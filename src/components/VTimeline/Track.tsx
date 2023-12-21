@@ -1,16 +1,16 @@
-import VTimelineBlock from "@/components/VTimeline/Block"
-import { TTrackBlock } from "@/composables/timeline"
+import VClip from "@/components/VTimeline/Clip.tsx"
+import { TClip } from "@/composables/timeline.ts"
 
 export default defineComponent({
   setup() {
-    const timelineStore = useTimelineStore()
+    const timelineStore = useStoreTimeline()
     const { unitWidth, promptBlocks } = storeToRefs(timelineStore)
     const { alignBlock, addPromptBlocks, hasPromptBlocks, removePromptBlocks } = timelineStore
 
-    const activeBlockStore = useActiveBlockStore()
+    const activeBlockStore = useActiveClip()
     const { block: activeBlock } = storeToRefs(activeBlockStore)
 
-    const virtualBlockStore = useVirtualBlockStore()
+    const virtualBlockStore = useHoverClip()
     const { block: virtualBlock } = storeToRefs(virtualBlockStore)
 
     const refTimelineTrack = ref<HTMLElement | null>(null)
@@ -66,7 +66,7 @@ export default defineComponent({
       }
     })
 
-    const onBlockSelect = (block: TTrackBlock) => {
+    const onBlockSelect = (block: TClip) => {
       activeBlockStore.activeBlock(block)
       virtualBlockStore.deleteBlock()
     }
@@ -77,7 +77,7 @@ export default defineComponent({
       isDragging.value = true
     }
 
-    const dragEnd = (block: TTrackBlock, newStart: number) => {
+    const dragEnd = (block: TClip, newStart: number) => {
       const start = Math.floor((newStart * 5) / 125) * 125
       alignBlock(block.start, start)
       isDragging.value = false
@@ -88,8 +88,8 @@ export default defineComponent({
         ref={refTimelineTrack}
         class="min-w-screen relative flex h-[--timeline-track-height] rounded border-b-[1px] border-zinc-200 text-white"
       >
-        {promptBlocks.value.map((block: TTrackBlock, index) => (
-          <VTimelineBlock
+        {promptBlocks.value.map((block: TClip, index) => (
+          <VClip
             key={index}
             isVirtual={false}
             unitWidth={unitWidth.value}
@@ -100,7 +100,7 @@ export default defineComponent({
           />
         ))}
         {virtualBlock.value && !isDragging.value && (
-          <VTimelineBlock
+          <VClip
             isVirtual={true}
             unitWidth={unitWidth.value}
             block={virtualBlock.value}

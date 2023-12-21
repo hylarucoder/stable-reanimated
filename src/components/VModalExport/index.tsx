@@ -1,6 +1,5 @@
 import { Button, Form, FormItem, InputNumber, Modal, Progress, Radio, RadioGroup } from "ant-design-vue"
-import VProgressMini from "@/components/VProgressMini"
-import { vConfetti } from "@neoconfetti/vue"
+import VProgressMini from "./VProgressMini"
 
 export default defineComponent({
   emits: ["closeModal"],
@@ -9,7 +8,7 @@ export default defineComponent({
     const { task, isActive } = storeToRefs(storeVideoExport)
     const optionsStore = useOptionsStore()
     const { optPerformances } = optionsStore
-    const formStore = useFormStore()
+    const formStore = useStoreForm()
     const { sizeOpts, size, duration, performance } = storeToRefs(formStore)
 
     const handleCloseModal = () => {

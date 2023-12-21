@@ -6,7 +6,7 @@ interface FormState {
   controlnet: string[]
 }
 
-export interface TTrackBlock {
+export interface TClip {
   start: number
   duration: number
   prompt: string
@@ -29,7 +29,7 @@ const controlnets = [
   "controlnet_tile",
 ]
 
-export const useTimelineStore = defineStore("timeline", () => {
+export const useStoreTimeline = defineStore("timeline", () => {
   const refTimeline = ref(null)
   const { isOutside: isMouseOutside } = useMouseInElement(refTimeline, {})
   const refRuler = ref(null)
@@ -53,7 +53,7 @@ export const useTimelineStore = defineStore("timeline", () => {
   const unitStep = computed(() => {
     return 1000 / fps.value
   })
-  const blocks = ref<TTrackBlock[]>([])
+  const blocks = ref<TClip[]>([])
 
   const initBlocks = () => {
     const _blocks = []

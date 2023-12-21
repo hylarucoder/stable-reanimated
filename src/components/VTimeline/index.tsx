@@ -1,10 +1,10 @@
-import VTimelineToolbar from "@/components/VTimeline/Toolbar"
-import VTimelineTrackLeftPanel from "@/components/VTimeline/TrackLeftPanel"
-import VTimelineTracks from "@/components/VTimeline/Tracks"
+import VTimelineToolbar from "@/components/VTimeline/Toolbar.tsx"
+import VTimelineTrackLeftPanel from "@/components/VTimeline/TracksMain.tsx"
+import VTimelineTracks from "@/components/VTimeline/TracksContainer.tsx"
 
 export default defineComponent({
   setup() {
-    const timeline = useTimelineStore()
+    const timeline = useStoreTimeline()
 
     timeline.initBlocks()
     return () => (

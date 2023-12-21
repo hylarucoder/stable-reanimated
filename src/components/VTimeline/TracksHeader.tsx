@@ -1,6 +1,6 @@
 export default defineComponent({
   setup() {
-    const timelineStore = useTimelineStore()
+    const timelineStore = useStoreTimeline()
     const { duration, refRuler, unitWidth, fps, isMouseOutside, rulerPos } = storeToRefs(timelineStore)
     const videoPlayerStore = useVideoPlayer()
     const playAxis = usePlayAxis()

@@ -1,4 +1,4 @@
-export function useStorage(key: string) {
+export function useVStorage(key: string) {
   let storedValues = localStorage.getItem(key + "_storage")
 
   const storage = ref(JSON.parse(storedValues))

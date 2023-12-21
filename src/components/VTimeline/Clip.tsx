@@ -1,9 +1,9 @@
-import type { TTrackBlock } from "@/composables/timeline"
+import type { TClip } from "@/composables/timeline.ts"
 
 export default defineComponent({
   props: {
     block: {
-      type: Object as () => TTrackBlock,
+      type: Object as () => TClip,
       required: true,
     },
     isVirtual: Boolean,
@@ -20,7 +20,7 @@ export default defineComponent({
       selected.value = false
     })
 
-    const onClickBlock = (block: TTrackBlock) => {
+    const onClickBlock = (block: TClip) => {
       selected.value = true
       if (!props.isVirtual) {
         emit("blockSelect", block)
