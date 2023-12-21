@@ -21,15 +21,15 @@ export default defineComponent({
 
     return () => (
       <div>
-        <div ref={el} style={style.value} class="absolute  z-10 h-full w-[20px]">
-          <div class="absolute top-[-10px] flex h-[100px] cursor-move  flex-col items-center">
+        <div ref={el} style={style.value} class="absolute z-10 h-full w-[20px]">
+          <div class="absolute top-[-10px] flex h-[100px] cursor-move flex-col items-center">
             <span class="i-lucide-diamond ml-[-10px] h-6 w-6 text-red-500"></span>
             <div class="ml-[-10px] h-full w-[2px]  bg-red-500" />
           </div>
         </div>
         {!isMouseOutside.value && (
-          <div style={{ left: `${rulerPos.value - 10}px` }} class="pointer-events-none absolute z-[90] flex">
-            <div class="absolute top-[-10px] flex h-[100px] w-[20px] cursor-move flex-col items-center">
+          <div style={{ left: `${rulerPos.value - 5}px` }} class="z-90 absolute h-full w-[20px]">
+            <div class="pointer-events-none absolute top-[-10px] flex h-[100px] cursor-move flex-col items-center">
               <span class="i-lucide-diamond h-6 w-6 text-zinc-400"></span>
               <div class="h-full w-[2px] bg-zinc-400" />
             </div>

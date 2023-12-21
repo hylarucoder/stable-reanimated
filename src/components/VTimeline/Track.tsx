@@ -8,10 +8,10 @@ export default defineComponent({
     const { alignBlock, addPromptBlocks, hasPromptBlocks, removePromptBlocks } = timelineStore
 
     const activeBlockStore = useActiveBlockStore()
-    const { block: activeBlock } = activeBlockStore
+    const { block: activeBlock } = storeToRefs(activeBlockStore)
 
     const virtualBlockStore = useVirtualBlockStore()
-    const { block: virtualBlock } = virtualBlockStore
+    const { block: virtualBlock } = storeToRefs(virtualBlockStore)
 
     const refTimelineTrack = ref<HTMLElement | null>(null)
 
@@ -60,8 +60,8 @@ export default defineComponent({
       if (!activeBlock || activeBlockStore.focused) {
         return
       }
-      if (activeBlock.start) {
-        removePromptBlocks(activeBlock.start)
+      if (activeBlock.value?.start) {
+        removePromptBlocks(activeBlock.value?.start)
         activeBlockStore.deleteBlock()
       }
     })
@@ -99,11 +99,11 @@ export default defineComponent({
             onDragStart={dragStart}
           />
         ))}
-        {virtualBlock && !isDragging.value && (
+        {virtualBlock.value && !isDragging.value && (
           <VTimelineBlock
             isVirtual={true}
             unitWidth={unitWidth.value}
-            block={virtualBlock}
+            block={virtualBlock.value}
             onClick={confirmVirtualBlock}
           />
         )}

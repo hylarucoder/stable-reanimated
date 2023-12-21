@@ -1,6 +1,5 @@
 import { Button, Form, FormItem } from "ant-design-vue"
 import VPromptInput from "@/components/VPromptInput"
-import { storeToRefs } from "pinia"
 
 export default defineComponent({
   setup() {

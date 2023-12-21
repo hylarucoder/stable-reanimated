@@ -1,7 +1,6 @@
 import { useActiveBlockStore } from "@/composables/block"
 import VProjectSettingPanel from "./VProjectSettingPanel" // Assumed import
 import VPromptPanel from "./VPromptPanel"
-import { storeToRefs } from "pinia" // Assumed import
 
 export default defineComponent({
   setup() {

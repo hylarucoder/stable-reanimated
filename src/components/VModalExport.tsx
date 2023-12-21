@@ -1,5 +1,6 @@
 import { Button, Form, FormItem, InputNumber, Modal, Progress, Radio, RadioGroup } from "ant-design-vue"
 import VProgressMini from "@/components/VProgressMini"
+import { vConfetti } from "@neoconfetti/vue"
 
 export default defineComponent({
   emits: ["closeModal"],
@@ -24,7 +25,10 @@ export default defineComponent({
       }
       return task.value.completed >= 100 ? "success" : "active"
     })
-    const refSubtasks = ref<HTMLElement[]>([])
+    watch(status, (value, oldValue) => {
+      if (value == "success" && oldValue == "active") {
+      }
+    })
     const refBtn = ref<HTMLElement | null>(null)
     const isHovered = useElementHover(refBtn)
     const lastTask = computed(() => {
@@ -33,19 +37,6 @@ export default defineComponent({
       }
       return task.value.subtasks[task.value.subtasks.length - 1]
     })
-    watch(
-      task,
-      () => {
-        nextTick(() => {
-          if (refSubtasks.value?.length) {
-            refSubtasks.value[refSubtasks.value?.length - 1].scrollIntoView({ behavior: "smooth" })
-          }
-        })
-      },
-      {
-        deep: true,
-      },
-    )
 
     return () => (
       <Modal centered open title="Export" onCancel={handleCloseModal} maskClosable={false}>
