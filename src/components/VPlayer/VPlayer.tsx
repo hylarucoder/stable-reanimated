@@ -78,7 +78,7 @@ export default defineComponent({
     const videoPlayerStore = useVideoPlayer()
     const { videoRef, waiting, src, currentTime, playing, duration } = storeToRefs(videoPlayerStore)
     const { loadVideo, play, pause, toggle } = videoPlayerStore
-    const videoExportStore = useVideoExportStore()
+    const videoExportStore = useVideoPipeline()
     const { task } = storeToRefs(videoExportStore)
 
     const downloadUrl = () => {

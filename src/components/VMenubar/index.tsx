@@ -8,7 +8,7 @@ export default defineComponent({
     const { loadPreset } = formStore
     const optionsStore = useOptionsStore()
     const { optPresets, optProjects, options } = storeToRefs(optionsStore)
-    const videoExportStore = useVideoExportStore()
+    const videoExportStore = useVideoPipeline()
     const { modalVisible } = storeToRefs(videoExportStore)
 
     const changePresets = (value: string) => {

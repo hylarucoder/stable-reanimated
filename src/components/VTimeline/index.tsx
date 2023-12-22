@@ -1,5 +1,5 @@
 import VTimelineToolbar from "@/components/VTimeline/Toolbar.tsx"
-import VTimelineTrackLeftPanel from "@/components/VTimeline/TracksMain.tsx"
+import VTimelineTrackLeftPanel from "@/components/VTimeline/SidePanel.tsx"
 import VTimelineTracks from "@/components/VTimeline/TracksContainer.tsx"
 
 export default defineComponent({

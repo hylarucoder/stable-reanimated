@@ -193,7 +193,7 @@ declare global {
   const useGeolocation: typeof import('@vueuse/core')['useGeolocation']
   const useHead: typeof import('@vueuse/head')['useHead']
   const useHoverClip: typeof import('./composables/clip')['useHoverClip']
-  const useI18n: typeof import('./composables/useI18n')['useI18n']
+  const useI18n: typeof import('vue-i18n')['useI18n']
   const useIdle: typeof import('@vueuse/core')['useIdle']
   const useImage: typeof import('@vueuse/core')['useImage']
   const useInfiniteScroll: typeof import('@vueuse/core')['useInfiniteScroll']
@@ -287,7 +287,8 @@ declare global {
   const useVModels: typeof import('@vueuse/core')['useVModels']
   const useVStorage: typeof import('./composables/useStorage')['useVStorage']
   const useVibrate: typeof import('@vueuse/core')['useVibrate']
-  const useVideoExportStore: typeof import('./composables/pipeline')['useVideoExportStore']
+  const useVideoExportStore: typeof import('./composables/pipeline')['useVideoPipeline']
+  const useVideoPipeline: typeof import('./composables/pipeline')['useVideoPipeline']
   const useVideoPlayer: typeof import('./composables/player')['useVideoPlayer']
   const useVirtualBlockStore: typeof import('./composables/clip.ts')['useHoverClip']
   const useVirtualList: typeof import('@vueuse/core')['useVirtualList']
@@ -373,7 +374,6 @@ declare module 'vue' {
     readonly isReactive: UnwrapRef<typeof import('vue')['isReactive']>
     readonly isReadonly: UnwrapRef<typeof import('vue')['isReadonly']>
     readonly isRef: UnwrapRef<typeof import('vue')['isRef']>
-    readonly loadLocale: UnwrapRef<typeof import('./composables/useI18n')['loadLocale']>
     readonly makeDestructurable: UnwrapRef<typeof import('@vueuse/core')['makeDestructurable']>
     readonly mapActions: UnwrapRef<typeof import('pinia')['mapActions']>
     readonly mapGetters: UnwrapRef<typeof import('pinia')['mapGetters']>
@@ -514,7 +514,7 @@ declare module 'vue' {
     readonly useGeolocation: UnwrapRef<typeof import('@vueuse/core')['useGeolocation']>
     readonly useHead: UnwrapRef<typeof import('@vueuse/head')['useHead']>
     readonly useHoverClip: UnwrapRef<typeof import('./composables/clip')['useHoverClip']>
-    readonly useI18n: UnwrapRef<typeof import('./composables/useI18n')['useI18n']>
+    readonly useI18n: UnwrapRef<typeof import('vue-i18n')['useI18n']>
     readonly useIdle: UnwrapRef<typeof import('@vueuse/core')['useIdle']>
     readonly useImage: UnwrapRef<typeof import('@vueuse/core')['useImage']>
     readonly useInfiniteScroll: UnwrapRef<typeof import('@vueuse/core')['useInfiniteScroll']>
@@ -602,9 +602,8 @@ declare module 'vue' {
     readonly useUserMedia: UnwrapRef<typeof import('@vueuse/core')['useUserMedia']>
     readonly useVModel: UnwrapRef<typeof import('@vueuse/core')['useVModel']>
     readonly useVModels: UnwrapRef<typeof import('@vueuse/core')['useVModels']>
-    readonly useVStorage: UnwrapRef<typeof import('./composables/useStorage')['useVStorage']>
     readonly useVibrate: UnwrapRef<typeof import('@vueuse/core')['useVibrate']>
-    readonly useVideoExportStore: UnwrapRef<typeof import('./composables/pipeline')['useVideoExportStore']>
+    readonly useVideoPipeline: UnwrapRef<typeof import('./composables/pipeline')['useVideoPipeline']>
     readonly useVideoPlayer: UnwrapRef<typeof import('./composables/player')['useVideoPlayer']>
     readonly useVirtualList: UnwrapRef<typeof import('@vueuse/core')['useVirtualList']>
     readonly useWakeLock: UnwrapRef<typeof import('@vueuse/core')['useWakeLock']>
@@ -680,7 +679,6 @@ declare module '@vue/runtime-core' {
     readonly isReactive: UnwrapRef<typeof import('vue')['isReactive']>
     readonly isReadonly: UnwrapRef<typeof import('vue')['isReadonly']>
     readonly isRef: UnwrapRef<typeof import('vue')['isRef']>
-    readonly loadLocale: UnwrapRef<typeof import('./composables/useI18n')['loadLocale']>
     readonly makeDestructurable: UnwrapRef<typeof import('@vueuse/core')['makeDestructurable']>
     readonly mapActions: UnwrapRef<typeof import('pinia')['mapActions']>
     readonly mapGetters: UnwrapRef<typeof import('pinia')['mapGetters']>
@@ -821,7 +819,7 @@ declare module '@vue/runtime-core' {
     readonly useGeolocation: UnwrapRef<typeof import('@vueuse/core')['useGeolocation']>
     readonly useHead: UnwrapRef<typeof import('@vueuse/head')['useHead']>
     readonly useHoverClip: UnwrapRef<typeof import('./composables/clip')['useHoverClip']>
-    readonly useI18n: UnwrapRef<typeof import('./composables/useI18n')['useI18n']>
+    readonly useI18n: UnwrapRef<typeof import('vue-i18n')['useI18n']>
     readonly useIdle: UnwrapRef<typeof import('@vueuse/core')['useIdle']>
     readonly useImage: UnwrapRef<typeof import('@vueuse/core')['useImage']>
     readonly useInfiniteScroll: UnwrapRef<typeof import('@vueuse/core')['useInfiniteScroll']>
@@ -909,9 +907,8 @@ declare module '@vue/runtime-core' {
     readonly useUserMedia: UnwrapRef<typeof import('@vueuse/core')['useUserMedia']>
     readonly useVModel: UnwrapRef<typeof import('@vueuse/core')['useVModel']>
     readonly useVModels: UnwrapRef<typeof import('@vueuse/core')['useVModels']>
-    readonly useVStorage: UnwrapRef<typeof import('./composables/useStorage')['useVStorage']>
     readonly useVibrate: UnwrapRef<typeof import('@vueuse/core')['useVibrate']>
-    readonly useVideoExportStore: UnwrapRef<typeof import('./composables/pipeline')['useVideoExportStore']>
+    readonly useVideoPipeline: UnwrapRef<typeof import('./composables/pipeline')['useVideoPipeline']>
     readonly useVideoPlayer: UnwrapRef<typeof import('./composables/player')['useVideoPlayer']>
     readonly useVirtualList: UnwrapRef<typeof import('@vueuse/core')['useVirtualList']>
     readonly useWakeLock: UnwrapRef<typeof import('@vueuse/core')['useWakeLock']>

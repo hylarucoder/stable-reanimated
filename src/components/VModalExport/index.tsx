@@ -4,7 +4,7 @@ import VProgressMini from "./VProgressMini"
 export default defineComponent({
   emits: ["closeModal"],
   setup(props, { emit }) {
-    const storeVideoExport = useVideoExportStore()
+    const storeVideoExport = useVideoPipeline()
     const { task, isActive } = storeToRefs(storeVideoExport)
     const optionsStore = useOptionsStore()
     const { optPerformances } = optionsStore

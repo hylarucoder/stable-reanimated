@@ -28,11 +28,13 @@ export default defineComponent({
     })
 
     const addWeight = (event: KeyboardEvent) => {
-      console.log("value", value.value)
       const cursorPosition = (event.target as HTMLTextAreaElement).selectionStart
       const newVal = calculateWeightPrompt(value.value, cursorPosition, true)
       emit("update:value", newVal)
       const target = event.target
+      if (!target) {
+        return
+      }
       nextTick(() => {
         target.selectionStart = cursorPosition
         target.selectionEnd = cursorPosition
@@ -44,13 +46,16 @@ export default defineComponent({
       const newVal = calculateWeightPrompt(value.value, cursorPosition, false)
       emit("update:value", newVal)
       const target = event.target
+      if (!target) {
+        return
+      }
       nextTick(() => {
         target.selectionStart = cursorPosition
         target.selectionEnd = cursorPosition
       })
     }
 
-    const calculateWeightPrompt = (text, cursorPosition, isAdd) => {
+    const calculateWeightPrompt = (text: string, cursorPosition, isAdd) => {
       // 找到光标所在的词
       const words = text.match(/(\(.*?\)|[^,]+)/g).map((word) => word.trim())
       let cursorWordIndex = null
