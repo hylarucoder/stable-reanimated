@@ -1,10 +1,17 @@
-import { Button, CheckableTag, Tag, Textarea } from "ant-design-vue"
+import { Button, CheckableTag, Modal, Tag, Textarea } from "ant-design-vue"
 import * as promptData from "@/assets/tags/zh_CN.json"
 
 export default defineComponent({
-  setup() {
+  props: {
+    value: {
+      type: String,
+      default: "",
+    },
+  },
+  emits: ["ok", "close"],
+  setup(props, { emit }) {
     const refInput = ref<HTMLTextAreaElement | null>(null)
-    const value = ref("")
+    const value = ref(props.value)
     const tabKey = ref(promptData.data[0].name)
     const groupKey = ref(promptData.data[0].groups[0].name)
     const currentTab = computed(() => {
@@ -15,18 +22,24 @@ export default defineComponent({
       return currentTab.value?.groups.find((x) => x.name == groupKey.value)
     })
 
+    const fixTail = (s: string) => {
+      if (!s.endsWith(",")) {
+        return s + ","
+      }
+      return s
+    }
+
     function formatString(input: string) {
       if (!input) {
         return input
       }
-      return (
-        input
-          // Replace underscores with spaces
-          .replace(/_/g, " ")
-          // Convert to lowercase, then capitalize the first letter of each word
-          .toLowerCase()
-          .replace(/(^\w|\s\w)/g, (m) => m.toUpperCase())
-      )
+      const s = input
+        // Replace underscores with spaces
+        .replace(/_/g, " ")
+        // Convert to lowercase, then capitalize the first letter of each word
+        .toLowerCase()
+        .replace(/(^\w|\s\w)/g, (m) => m.toUpperCase())
+      return s
     }
 
     const format = (en: string, zh_CN: string) => {
@@ -41,22 +54,26 @@ export default defineComponent({
         return
       }
       const cursorPosition = (e.target as HTMLTextAreaElement).selectionStart
-      value.value = value.value + textToInsert
+      value.value = fixTail(value.value) + textToInsert
       nextTick(() => {
         target.selectionStart = cursorPosition
         target.selectionEnd = cursorPosition
       })
       refInput.value.focus()
     }
-    const keepFocus = (e) => {
-      // 如果点击的是 textarea 之外的地方，阻止失去焦点
-      if (e.target !== e.currentTarget) {
-        e.preventDefault()
-      }
-    }
 
     return () => (
-      <div class="mx-auto flex w-full max-w-2xl flex-col">
+      <Modal
+        open={true}
+        onCancel={() => {
+          emit("close")
+        }}
+        onOk={() => {
+          emit("ok", value.value)
+        }}
+        closable={true}
+        class="mx-auto flex w-full max-w-2xl flex-col"
+      >
         <div>
           {locale.value == "en" && (
             <Button
@@ -149,7 +166,7 @@ export default defineComponent({
             })}
           </div>
         </div>
-      </div>
+      </Modal>
     )
   },
 })

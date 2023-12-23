@@ -1,5 +1,6 @@
 import type { PropType } from "vue"
-import { Textarea } from "ant-design-vue"
+import { Button, Textarea } from "ant-design-vue"
+import VPromptBuilder from "@/components/VPromptBuilder"
 
 export default defineComponent({
   props: {
@@ -18,6 +19,7 @@ export default defineComponent({
       get: () => props.value,
       set: (newValue) => emit("update:value", newValue),
     })
+    const visible = ref(false)
 
     const inputRef = ref<HTMLElement | null>(null)
 
@@ -105,23 +107,48 @@ export default defineComponent({
       return text
     }
     return () => (
-      <Textarea
-        ref={inputRef}
-        value={value.value}
-        onUpdate:value={(v) => {
-          value.value = v
-        }}
-        rows={3}
-        onKeydown={(event) => {
-          if (event.shiftKey && event.key === "ArrowUp") {
-            event.preventDefault()
-            addWeight(event)
-          } else if (event.shiftKey && event.key === "ArrowDown") {
-            event.preventDefault()
-            subWeight(event)
-          }
-        }}
-      />
+      <div class="relative">
+        <Textarea
+          ref={inputRef}
+          value={value.value}
+          onUpdate:value={(v) => {
+            value.value = v
+          }}
+          rows={4}
+          onKeydown={(event) => {
+            if (event.shiftKey && event.key === "ArrowUp") {
+              event.preventDefault()
+              addWeight(event)
+            } else if (event.shiftKey && event.key === "ArrowDown") {
+              event.preventDefault()
+              subWeight(event)
+            }
+          }}
+        />
+        <div class="absolute bottom-1 right-1">
+          <Button
+            onClick={() => {
+              visible.value = true
+            }}
+          >
+            {{
+              icon: <span class="i-mdi-magic h-4 w-4 text-zinc-500 hover:text-zinc-800"></span>,
+            }}
+          </Button>
+          {visible.value && (
+            <VPromptBuilder
+              onClose={() => {
+                visible.value = false
+              }}
+              onOk={(v) => {
+                value.value = v
+                visible.value = false
+              }}
+              value={value.value}
+            />
+          )}
+        </div>
+      </div>
     )
   },
 })
