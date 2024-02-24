@@ -1,5 +1,5 @@
 import VClip from "@/components/VTimeline/Clip.tsx"
-import { TClip } from "@/composables/timeline.ts"
+import type { TClip } from "@/composables/timeline.ts"
 
 export default defineComponent({
   setup() {

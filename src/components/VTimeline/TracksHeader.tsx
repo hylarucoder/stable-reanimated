@@ -1,3 +1,5 @@
+import { useThrottleFn } from "@vueuse/shared"
+
 export default defineComponent({
   setup() {
     const timelineStore = useStoreTimeline()

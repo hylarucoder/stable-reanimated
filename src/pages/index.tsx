@@ -1,10 +1,9 @@
-import { useOptionsStore } from "@/composables/options.ts"
-import { useActiveClip } from "@/composables/clip.ts"
 import { Button, Result, Spin } from "ant-design-vue"
 import VMenubar from "@/components/VMenubar"
 import VMainPlayer from "@/components/VPlayer/VMainPlayer"
 import VInspector from "@/components/VInspector"
 import VTimeline from "@/components/VTimeline"
+import { useThrottleFn } from "@vueuse/shared"
 
 export default defineComponent({
   setup() {
